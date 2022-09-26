@@ -5,7 +5,7 @@ import { assert } from 'chai';
 import { helloWorld, goodBye } from '../index';
 import npmPackage from '../index';
 */
-import { helloWorld, goodBye } from '../src/index';
+import { helloWorld, goodBye, yolo } from '../src/index';
 import npmPackage from '../src/index';
 
 describe('NPM Package', () => {
@@ -38,6 +38,18 @@ describe('Goodbye Function', () => {
   it('should return the goodbye message', () => {
     const expected = 'Goodbye from my example modern npm package!';
     const actual = goodBye();
+    assert.equal(actual, expected);
+  });
+});
+
+describe('YOLO Function', () => {
+  it('should be a function', () => {
+    assert.isFunction(yolo);
+  });
+
+  it('should return the goodbye message', () => {
+    const expected = 'Goodbye from my example modern npm package!';
+    const actual = yolo();
     assert.equal(actual, expected);
   });
 });
