@@ -5,7 +5,8 @@ import { assert } from 'chai';
 import { helloWorld, goodBye } from '../index';
 import npmPackage from '../index';
 */
-import { helloWorld, goodBye, Nilla, yolo } from '../src/index';
+// import { helloWorld, goodBye, Nilla, yolo } from '../src/index';
+import { nilla } from '../src/index';
 import npmPackage from '../src/index';
 
 describe('NPM Package', () => {
@@ -17,7 +18,7 @@ describe('NPM Package', () => {
     assert.property(npmPackage, 'helloWorld');
   });
 });
-
+/*
 describe('Hello World Function', () => {
   it('should be a function', () => {
     assert.isFunction(helloWorld);
@@ -53,15 +54,27 @@ describe('YOLO Function', () => {
     assert.equal(actual, expected);
   });
 });
-
+*/
 describe('Nilla Function', () => {
   it('should be a function', () => {
-    assert.isFunction(Nilla);
+    assert.isFunction(nilla);
   });
 
   it('should return the arg', () => {
-    const expected = 'My argument';
-    const actual = yolo(expected);
+    const expected = {format: {}, target};
+    const actual = nilla();
+    assert.equal(actual, expected);
+  });
+});
+
+describe('Pluralize Function', () => {
+  it('should be a function', () => {
+    assert.isFunction(nilla().format.pluralize());
+  });
+
+  it('should return the arg', () => {
+    const expected = '32 dogs';
+    const actual = nilla(32).format.pluralize('dog');
     assert.equal(actual, expected);
   });
 });

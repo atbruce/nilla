@@ -1,20 +1,16 @@
-import { Nilla, yolo } from './format/'
+import { format } from './format/'
 
-export {Nilla, yolo}
-
-export function helloWorld() {
-  const message = 'Hello World from my example modern npm package!';
-  return message;
+const librarys = {
+    format
 }
 
-export function goodBye() {
-  const message = 'Goodbye from my example modern npm package!';
-  return message;
+export const nilla = (target: any) => {
+   let self = {target, ...librarys}
+   
+   Object.keys(librarys).forEach(key => {
+       // @ts-ignore
+       self[key] = librarys[key](self)
+   })
+   
+   return self
 }
-
-Nilla(32).format.plural('cat')
-
-export default {
-  helloWorld,
-  goodBye,
-};
