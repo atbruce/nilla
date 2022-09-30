@@ -18,11 +18,76 @@ export const format = (self: {target: any}) => {
                 return words.join(' ')
             })(self.target)
         },
-        count(){
-            return null
+        count(decimals: string | number | null | undefined){
+            return (({target}: any[] | number | string) => {
+                let dividend, divisor, max_dec, symbol
+                
+                if(Array.isArray(target)){
+                    dividend = target.length
+                } else if(typeof target == 'number'){
+                    dividend = target
+                } else if(typeof target == 'string' && !isNaN(Number(target))){
+                    dividend = Number(target)
+                } else if(typeof target == 'string'){
+                    const message = `Nilla: Argument is typeof 'string' && isNaN(Number(string)) = true`
+                    throw new TypeError(message)
+                }
+
+                if(dividend < 1000){
+                    return dividend
+                } else if(dividend < 1000000){
+                    // MEMO | Thousands
+                    divisor = 1000
+                    max_dec = 3
+                    symbol = 'K'
+                } else if(dividend < 1000000000){
+                    // MEMO | Millions
+                    divisor = 1000000
+                    max_dec = 6
+                    symbol = 'M'
+                } else if(dividend < 1000000000000){
+                    // MEMO | Billions
+                    divisor = 1000000000
+                    max_dec = 9
+                    symbol = 'B'
+                } else if(dividend < 1000000000000000){
+                    // MEMO | Trillions
+                    divisor = 1000000000000
+                    max_dec = 12
+                    symbol = 't'
+                } else if(dividend < Number.MAX_SAFE_INTEGER){
+                    // MEMO | Quadrillion
+                    divisor = 1000000000000000
+                    max_dec = 15
+                    symbol = 'q'
+                } else {
+                    // MEMO | Sorry, not adding support for BigInt right now
+                    divisor = 1
+                    max_dec = 0
+                    symbol = ''
+                }
+                
+                return ((decimals, dividend, divisor, max_dec, symbol) => {
+                    if(decimals < max_dec){
+                        return (dividend / divisor).toFixed(decimals || 0) + symbol
+                    } else {
+                        return Math.round(dividend / divisor) + symbol
+                    }
+                })(decimals, dividend, divisor, max_dec, symbol)
+
+            })(self)
         },
-        plural(word: string, raw?: boolean){
-            return ((target: any[] | number | string) => {
+        plural(word: string, config?: {raw?: boolean, formatCount?: number | string | null | undefined, zeroMod?: string}){
+            /* MEMO
+                @param(config): Opitonal settings
+                @param(config.raw): Returns string without prefix 
+                    - Example: !config.raw => '1200 messages' | !!config.raw => 'messages'
+                @param(config.formatCount): Uses internal method to abbreviate thousands/millions/etc
+                    - Example: !config.formatCount => '1200 messages' | config.formatCount: 1 => '1.2k messages'
+                @param(config.zeroMod): Use user defined substitute in place of 0
+                    - Example: !config.zeroMod => '0 messages' | config.zeroMod: 'No' => 'No messages'
+            */
+            return (({target, format}: {target: any[] | number | string; format: {}}) => {
                 const is_custom = word.indexOf('|') > -1,
                       format_case = (word: string, end: number, tail: string) => {
                           const end_converted = end ? end : 1,
@@ -40,6 +105,8 @@ export const format = (self: {target: any}) => {
                     singular,
                     plural,
                     bucket
+                
+                word = word.toString()
                 
                 if(is_custom){
                     const words = word.split('|')
@@ -73,24 +140,40 @@ export const format = (self: {target: any}) => {
                 }
                 
                 if(Array.isArray(target)){
-                   prefix = target.length
-                   suffix = target.length === 1 ? singular : plural
+                    if(config && config.hasOwnProperty('formatCount')){
+                        prefix = config && config.hasOwnProperty('zeroMod') && !target.length ? config.zeroMod : format.count(config.formatCount)
+                    } else {
+                        prefix = config && config.hasOwnProperty('zeroMod') && !target.length ? config.zeroMod : target.length
+                    }
+                   
+                    suffix = target.length === 1 ? singular : plural
 
-                   return raw ? `${suffix}` : `${prefix} ${suffix}`
+                    return config && config.raw ? `${suffix}` : `${prefix} ${suffix}`
                 } else if(typeof target === 'number'){
-                   prefix = target
-                   suffix = target === 1 ? singular : plural
+                    if(config && config.hasOwnProperty('formatCount')){
+                        prefix = config && config.hasOwnProperty('zeroMod') && !target ? config.zeroMod : format.count(config.formatCount)
+                    } else {
+                        prefix = config && config.hasOwnProperty('zeroMod') && !target ? config.zeroMod : target
+                    }
+                    
+                    suffix = target === 1 ? singular : plural
 
-                   return raw ? `${suffix}` : `${prefix} ${suffix}`
+                    return config && config.raw ? `${suffix}` : `${prefix} ${suffix}`
                 } else if(typeof target === 'string' && !isNaN(Number(target))){
-                   prefix = Number(target)
-                   suffix = Number(target) === 1 ? singular : plural
+                    if(config && config.hasOwnProperty('formatCount')){
+                        prefix = config && config.hasOwnProperty('zeroMod') && ! Number(target) ? config.zeroMod : format.count(config.formatCount)
+                    } else {
+                        prefix = config && config.hasOwnProperty('zeroMod') && ! Number(target) ? config.zeroMod : Number(target)
+                    }
+                    
+                    
+                    suffix = Number(target) === 1 ? singular : plural
 
-                   return raw ? `${suffix}` : `${prefix} ${suffix}`
+                    return config && config.raw ? `${suffix}` : `${prefix} ${suffix}`
                 } else {
                   return ''
                 }
-            })(self.target)
+            })(self)
         }
    }
 }
