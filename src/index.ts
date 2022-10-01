@@ -1,14 +1,15 @@
 // @ts-nocheck
 import { format } from './format/'
-
+import { generate } from './generate/'
 const libraries = {
-    format
+    format,
+    generate
 }
 
-export const nilla = (target: any) => {
-    let self = {target, timer: null, ...libraries}
+export const nilla = (target: any | null | undefined) => {
+    let self = {target: target || null, ...libraries}
     // @ts-ignore
-    self.clone = (({target}) => JSON.parse(JSON.stringify(target)))(self)
+    // self.clone = (({target}) => JSON.parse(JSON.stringify(target)))(self)
     // @ts-ignore
     /*
     self.performance = (({target}) => {

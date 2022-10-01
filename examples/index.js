@@ -64,9 +64,24 @@ let sample_object = {
     favorite_color: 'blue'
 }
 
-const sample_clone = nilla(sample_object).clone
+// const sample_clone = nilla(sample_object).generate.clone
 
+const rand = Math.random()
+console.log('rand', rand)
+
+/*
 sample_object.first_name = 'Robert'
 
 console.log('sample_clone::::::', sample_clone)
 console.log('sample_object::::::', sample_object)
+*/
+
+const rand_id_1 = nilla().generate.guid
+const rand_id_2 = nilla().generate.guid
+console.log('rand_id_1::::::', rand_id_1)
+console.log('rand_id_2::::::', rand_id_2)
+
+const rand_hex_1 = nilla().generate.hex
+const rand_hex_2 = nilla(['#1a75d2', '#000000', '#ffffff', '#42f2d7']).generate.hex
+console.log('rand_hex_1::::::', rand_hex_1)
+console.log('rand_hex_2::::::', rand_hex_2)

@@ -1,5 +1,5 @@
 // @ts-nocheck
-export const format = (self: {target: any}) => {
+export const format = (self: {target: any | null | undefined}) => {
     return {
         capital(config: {parser: string}){
             return ((target: string) => {
