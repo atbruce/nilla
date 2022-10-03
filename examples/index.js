@@ -86,3 +86,14 @@ const rand_hex_1 = nilla().generate.hex()
 const rand_hex_2 = nilla().generate.hex(['#1a75d2', '#000000', '#ffffff', '#42f2d7'])
 console.log('rand_hex_1::::::', rand_hex_1)
 console.log('rand_hex_2::::::', rand_hex_2)
+
+// const my_string = 'the quick brown fox jumped over the small fence'
+const my_string = 'john'
+const my_string_cap = nilla(my_string).format.capitalize()
+
+console.log('my_string_cap', my_string_cap)
+
+const my_title = 'abraham lincoln: a story untold'
+const my_title_cap = nilla(my_title).format.title()
+
+console.log('my_title_cap', my_title_cap)

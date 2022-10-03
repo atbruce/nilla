@@ -1,29 +1,39 @@
 // @ts-nocheck
+import {GRAMMAR} from '../library/index'
+
 export const format = (self: {target: any | null | undefined}) => {
     return {
         capitalize(parser: string | null | undefined){
-            return ((target: string[] | string ) => {
+            return (({target}: string[] | string ) => { 
+                let response 
+                
                 if(Array.isArray(target) && !target.map(item => typeof item === 'string').includes(false)){
                     if(parser !== null && typeof parser !== 'string'){
                         const message = `[ nilla(target).format.capitalzie(parser) ]: @param(parser): Parser must be typeof 'string'`
                         throw new TypeError(message) 
                     }
-                    let words = target.split(parser)
+                    
+                    response = target.split(parser)
 
-                    words.forEach((word, index) => {
-                        word = word.toLowerCase()
-                                  .split('')
-                                  .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-                                  .join()
-
-                        words[index] = word
-                    })
-
-                    return words.join(' ')
+                    
                 } else if(Array.isArray(target)){
                     const message = `[ nilla(target).format.capitalzie(parser) ]: @param(target): Array indexes must be typeof 'string'`
                     throw new TypeError(message) 
+                } else {
+                    response = target.split(' ')
                 }
+                
+                response = response.map(word => word.toLowerCase())
+
+                response.forEach((word, index) => {
+                    word = word.split('')
+                               .map((letter, index) =>  index ? letter : letter.toUpperCase())
+                               .join('')
+                    
+                    response[index] = word 
+                })
+
+                return response.join(' ')
             })(self)
         },
         count(decimals: string | number | null | undefined){
@@ -182,6 +192,56 @@ export const format = (self: {target: any | null | undefined}) => {
                   return ''
                 }
             })(self)
-        }
+        },
+        title(parser: string | null | undefined){
+            return ((self: {target: string[] | string; format: {}}) => {
+                const {target, format} = self,
+                      compare = [...GRAMMAR.articles, ...GRAMMAR.conjunctions, ...GRAMMAR.prepositions]
+                
+                let response 
+                
+                if(Array.isArray(target) && !target.map(item => typeof item === 'string').includes(false)){
+                    if(parser !== null && typeof parser !== 'string'){
+                        const message = `[ nilla(target).format.capitalzie(parser) ]: @param(parser): Parser must be typeof 'string'`
+                        throw new TypeError(message) 
+                    }
+                    
+                    response = target.split(parser)
+
+                    
+                } else if(Array.isArray(target)){
+                    const message = `[ nilla(target).format.capitalzie(parser) ]: @param(target): Array indexes must be typeof 'string'`
+                    throw new TypeError(message) 
+                } else {
+                    response = target.split(' ')
+                }
+                
+                response = response.map(word => word.toLowerCase())
+                /*
+                const makeCapital = (word) => word.split('')
+                                                  .map((letter, index) =>  index ? letter : letter.toUpperCase())
+                                                  .join('')
+                */
+                response.forEach((word, index) => {
+                    if(!index || index == response.length - 1){
+                        self.target = word
+                        word = format.capitalize()
+                        // word = makeCapital(word)
+                    } else if(!compare.includes(word)){
+                        self.target = word
+                        word = format.capitalize()
+                        // word = makeCapital(word)
+                    } else if(index && [':', '-', ';'].includes(response[index - 1])){
+                        self.target = word
+                        word = format.capitalize()
+                        // word = makeCapital(word)
+                    }
+                    
+                    response[index] = word 
+                })
+
+                return response.join(' ')
+            })(self)
+        },
    }
 }
