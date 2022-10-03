@@ -1,22 +1,30 @@
 // @ts-nocheck
 export const format = (self: {target: any | null | undefined}) => {
     return {
-        capital(config: {parser: string}){
-            return ((target: string) => {
-                let parser = (config && config.hasOwnProperty('parser')) ? config.parser : ' ',
-                    words = target.split(parser)
-                    
-                words.forEach((word, index) => {
-                    word = word.toLowerCase()
-                              .split('')
-                              .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-                              .join()
+        capitalize(parser: string | null | undefined){
+            return ((target: string[] | string ) => {
+                if(Array.isArray(target) && !target.map(item => typeof item === 'string').includes(false)){
+                    if(parser !== null && typeof parser !== 'string'){
+                        const message = `[ nilla(target).format.capitalzie(parser) ]: @param(parser): Parser must be typeof 'string'`
+                        throw new TypeError(message) 
+                    }
+                    let words = target.split(parser)
 
-                    words[index] = word
-                })
+                    words.forEach((word, index) => {
+                        word = word.toLowerCase()
+                                  .split('')
+                                  .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+                                  .join()
 
-                return words.join(' ')
-            })(self.target)
+                        words[index] = word
+                    })
+
+                    return words.join(' ')
+                } else if(Array.isArray(target)){
+                    const message = `[ nilla(target).format.capitalzie(parser) ]: @param(target): Array indexes must be typeof 'string'`
+                    throw new TypeError(message) 
+                }
+            })(self)
         },
         count(decimals: string | number | null | undefined){
             return (({target}: any[] | number | string) => {
