@@ -1,5 +1,5 @@
 const {nilla} = require('../lib/cjs/index.js')
-
+/*
 const words = [
     'horse',
     'HORSE',
@@ -45,7 +45,7 @@ const numbers = [
     1340000000000000,
     // ['foo'],
 ]
-/*
+
 numbers.forEach(number => {
     console.log(number , `-------------------`)
     console.log(nilla(number).format.count())
@@ -55,7 +55,7 @@ numbers.forEach(number => {
     console.log(nilla(number.toString()).format.count('4'))
     console.log('--------------------------------')
 })
-*/
+
 
 let sample_object = {
     first_name: 'John',
@@ -65,10 +65,6 @@ let sample_object = {
 }
 
 const sample_clone = nilla(sample_object).clone
-/*
-const rand = Math.random()
-console.log('rand', rand)
-*/
 
 sample_object.first_name = 'Robert'
 
@@ -97,3 +93,40 @@ const my_title = 'abraham lincoln: a story untold'
 const my_title_cap = nilla(my_title).format.title()
 
 console.log('my_title_cap', my_title_cap)
+
+const my_lorem = nilla().generate.text(100)
+console.log('my_lorem', my_lorem)
+
+const my_color = nilla().generate.color()
+console.log('my_color', my_color)
+
+const my_decimal = 1.5
+console.log('typeof my_decimal', typeof my_decimal)
+
+const my_boolean = undefined
+console.log('typeof my_boolean', typeof my_boolean)
+*/
+
+const my_array_1 = nilla().generate.numberArray(1, 10)
+console.log('my_array_1 |', my_array_1)
+console.log('------------------------')
+
+const my_array_2 = nilla().generate.numberArray(1, -10)
+console.log('my_array_2 |', my_array_2)
+console.log('------------------------')
+
+const my_array_3 = nilla().generate.numberArray(-20, -10)
+console.log('my_array_3 |', my_array_3)
+console.log('------------------------')
+
+const my_array_4 = nilla().generate.numberArray(-20, -10, 2)
+console.log('my_array_4 |', my_array_4)
+console.log('------------------------')
+
+const my_array_5 = nilla().generate.numberArray(0, 3, (1/3))
+console.log('my_array_5 |', my_array_5)
+console.log('------------------------')
+
+const my_array_6 = nilla().generate.numberArray(1, 200, 5)
+console.log('my_array_6 |', my_array_6)
+console.log('------------------------')

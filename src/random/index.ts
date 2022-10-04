@@ -67,7 +67,7 @@ export const random = (self: {target: any | null | undefined}) => {
         from(){
             return (({target, format}: {target: any[]; random: {}}) => {
                 if(target && Array.isArray(target) && target.length){
-                    const index = random.between(0, Number(target.length))
+                    const index = random.between(0, Number(target.length - 1))
                     return target[index]
                 } else if(target && Array.isArray(target)){
                     const message = `[ nilla(target).random.from() ]: @param(target): Argument is an empty array`

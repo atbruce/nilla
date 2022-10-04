@@ -1,6 +1,11 @@
 // @ts-nocheck
+import {COLOR_MAP, COLORS} from './colors'
 import {GRAMMAR} from './grammar'
+import {LOREM} from './lorem'
 
 export {
-    GRAMMAR
+    COLOR_MAP,
+    COLORS,
+    GRAMMAR,
+    LOREM
 }

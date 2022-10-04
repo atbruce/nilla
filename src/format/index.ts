@@ -217,24 +217,17 @@ export const format = (self: {target: any | null | undefined}) => {
                 }
                 
                 response = response.map(word => word.toLowerCase())
-                /*
-                const makeCapital = (word) => word.split('')
-                                                  .map((letter, index) =>  index ? letter : letter.toUpperCase())
-                                                  .join('')
-                */
+
                 response.forEach((word, index) => {
                     if(!index || index == response.length - 1){
                         self.target = word
                         word = format.capitalize()
-                        // word = makeCapital(word)
                     } else if(!compare.includes(word)){
                         self.target = word
                         word = format.capitalize()
-                        // word = makeCapital(word)
-                    } else if(index && [':', '-', ';'].includes(response[index - 1])){
+                    } else if(index && [':', '-', ';'].includes(response[index - 1]) || /[:-;]/.test(response[index - 1])){
                         self.target = word
                         word = format.capitalize()
-                        // word = makeCapital(word)
                     }
                     
                     response[index] = word 
